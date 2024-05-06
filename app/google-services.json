@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "276693565167",
+    "firebase_url": "https://database-3336a-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "database-3336a",
+    "storage_bucket": "database-3336a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:276693565167:android:d3ceea65a33ac67911651a",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6Rx4JP5hbgI8s3xpfBai4ldmXuUY2qHc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
