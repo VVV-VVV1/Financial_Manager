@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -24,9 +25,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
-
+    MediaPlayer zvuk_in_login;
     private static final String TAG = "MyApp";
-
     ActivityMainBinding binding;
 
     private FirebaseAuth auth;
@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         emailField = (TextInputEditText) binding.email;
         passwordField = (TextInputEditText) binding.password;
+
+        zvuk_in_login = MediaPlayer.create(this, R.raw.zvuk_on_login);
 
         Log.d(TAG, "Activity created");
         binding.loginbtn.setOnClickListener(v -> onLoginClick());
@@ -86,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
                                 // Обработка ошибок
                             }
                         });
+
+                        zvuk_in_login.start();
 
                         Intent intent = new Intent(MainActivity.this, SecondActivity.class);
                         startActivity(intent);

@@ -79,6 +79,7 @@ public class ThirdActivity extends AppCompatActivity {
                         user.setName(name.getText().toString());
                         user.setPassword(pass.getText().toString());
                         user.setAdmin(false);
+                        user.setSum(0);
 
                         users.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                 .setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {

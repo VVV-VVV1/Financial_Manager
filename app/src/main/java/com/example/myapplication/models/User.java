@@ -2,14 +2,16 @@ package com.example.myapplication.models;
 
 public class User {
     public String email, name, password;
+    float sum;
     private boolean admin;
     public User(){
     }
 
-    public User(String email, String name, String password) {
+    public User(String email, String name, String password, float sum) {
         this.email = email;
         this.password = password;
         this.name = name;
+        this.sum = sum;
 
     }
 
@@ -43,5 +45,13 @@ public class User {
 
     public void setAdmin(boolean admin) {
         this.admin = admin;
+    }
+
+    public float getSum() {
+        return sum;
+    }
+
+    public void setSum(float sum) {
+        this.sum = sum;
     }
 }

@@ -6,10 +6,21 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.databinding.ActivitySecondBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 
 public class SecondActivity extends AppCompatActivity {
@@ -21,6 +32,12 @@ public class SecondActivity extends AppCompatActivity {
     private float sum = 0;
     SharedPreferences sPref;
     final String SAVED_TEXT = "saved_text";
+    DatabaseReference users;
+
+    FirebaseDatabase db = FirebaseDatabase.getInstance();
+    DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+
+    FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +47,7 @@ public class SecondActivity extends AppCompatActivity {
 
         binding.addButton.setOnClickListener(v -> addNumber());
 
-        loadNum();
+
 
         binding.remButton.setOnClickListener(v -> removeNum());
 
@@ -38,6 +55,12 @@ public class SecondActivity extends AppCompatActivity {
             Intent intent = new Intent (SecondActivity.this, FourthActivity.class);
             startActivity(intent);
         });
+
+        auth = FirebaseAuth.getInstance();
+
+        db = FirebaseDatabase.getInstance();
+
+        users = db.getReference("Users");
     }
 
 
@@ -51,40 +74,59 @@ public class SecondActivity extends AppCompatActivity {
 //            numberInput.setText("");
 //        }
 
+
         String numberStr = binding.numberInput.getText().toString();
         if (!numberStr.isEmpty()){
             float number = Float.parseFloat(numberStr);
             sum += number;
+
             binding.sumDisplay.setText("Cумма " + sum);
             binding.numberInput.setText("");
-            saveNum();
         }
 
+        HashMap hashMap = new HashMap();
+        hashMap.put("sum", sum);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        usersRef.child(user.getUid()).updateChildren(hashMap);
+
+        Toast.makeText(SecondActivity.this, "Данные сохранены", Toast.LENGTH_LONG).show();
     }
 
-    private void saveNum() {
-        sPref = getSharedPreferences("data_sum", MODE_PRIVATE);
-        SharedPreferences.Editor ed = sPref.edit();
-        ed.putString(SAVED_TEXT, binding.sumDisplay.getText().toString());
-        ed.commit();
-    }
 
-    private  void loadNum(){
-        sPref = getSharedPreferences("data_sum", MODE_PRIVATE);
-        String saveNum = sPref.getString(SAVED_TEXT, "");
-        binding.sumDisplay.setText(saveNum);
+    private void loadNum(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        usersRef.child(user.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                binding.sumDisplay.setText("Сумма:" + snapshot.child("sum").getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void removeNum(){
-        sPref = getSharedPreferences("data_sum", MODE_PRIVATE);
-        SharedPreferences.Editor ed = sPref.edit();
-        ed.remove(SAVED_TEXT);
+        HashMap hashMap = new HashMap();
+        hashMap.put("sum", 0);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        usersRef.child(user.getUid()).updateChildren(hashMap);
+
+        Toast.makeText(SecondActivity.this, "Данные удалены", Toast.LENGTH_LONG).show();
+
         binding.sumDisplay.setText("");
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        saveNum();
+    protected void onStart() {
+        super.onStart();
+        loadNum();
     }
 }
