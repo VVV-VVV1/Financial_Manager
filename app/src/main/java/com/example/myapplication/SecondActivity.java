@@ -3,6 +3,7 @@ package com.example.myapplication;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -44,10 +45,9 @@ public class SecondActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySecondBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         binding.addButton.setOnClickListener(v -> addNumber());
-
-
 
         binding.remButton.setOnClickListener(v -> removeNum());
 
@@ -61,20 +61,25 @@ public class SecondActivity extends AppCompatActivity {
         db = FirebaseDatabase.getInstance();
 
         users = db.getReference("Users");
+
+        binding.AnalisActivity.setOnClickListener(v ->{
+            Intent intent = new Intent(SecondActivity.this, FifthActivity.class);
+            startActivity(intent);
+        });
+
+        SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        boolean isAdmin = sharedPreferences.getBoolean("admin", false);
+
+
+        if (isAdmin) {
+            binding.remButton.setVisibility(View.VISIBLE);
+        } else {
+            binding.remButton.setVisibility(View.GONE);
+        }
+
     }
 
-
-
     private void addNumber() {
-//        String numberStr = numberInput.getText().toString();
-//        if (!numberStr.isEmpty()) {
-//            double number = Double.parseDouble(numberStr);
-//            sum += number;
-//            sumDisplay.setText("Сумма: " + sum);
-//            numberInput.setText("");
-//        }
-
-
         String numberStr = binding.numberInput.getText().toString();
         if (!numberStr.isEmpty()){
             float number = Float.parseFloat(numberStr);
@@ -94,16 +99,13 @@ public class SecondActivity extends AppCompatActivity {
         Toast.makeText(SecondActivity.this, "Данные сохранены", Toast.LENGTH_LONG).show();
     }
 
-
     private void loadNum(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
         usersRef.child(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 binding.sumDisplay.setText("Сумма:" + snapshot.child("sum").getValue().toString());
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -121,6 +123,7 @@ public class SecondActivity extends AppCompatActivity {
 
         Toast.makeText(SecondActivity.this, "Данные удалены", Toast.LENGTH_LONG).show();
 
+        sum = 0;
         binding.sumDisplay.setText("");
     }
 

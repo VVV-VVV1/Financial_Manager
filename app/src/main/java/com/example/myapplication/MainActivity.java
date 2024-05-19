@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         emailField = (TextInputEditText) binding.email;
         passwordField = (TextInputEditText) binding.password;
 
-        zvuk_in_login = MediaPlayer.create(this, R.raw.zvuk_on_login);
 
         Log.d(TAG, "Activity created");
         binding.loginbtn.setOnClickListener(v -> onLoginClick());
@@ -78,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                                     // Сохранение значения isAdmin в SharedPreferences
                                     SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
                                     SharedPreferences.Editor myEdit = sharedPreferences.edit();
-                                    myEdit.putBoolean("isAdmin", isAdmin);
+                                    myEdit.putBoolean("admin", isAdmin);
                                     myEdit.apply();
                                 }
                             }
@@ -89,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
 
-                        zvuk_in_login.start();
 
                         Intent intent = new Intent(MainActivity.this, SecondActivity.class);
                         startActivity(intent);
