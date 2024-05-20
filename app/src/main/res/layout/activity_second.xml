@@ -70,19 +70,19 @@
         android:src="@drawable/baseline_navigate_next_24"
         android:textColor="@color/LightGrey" />
 
-    <ImageButton
-        android:id="@+id/AnalisActivity"
-        android:layout_width="30dp"
-        android:layout_height="100dp"
-        android:layout_below="@+id/remButton"
-        android:layout_margin="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="14dp"
-        android:layout_marginBottom="20dp"
-        android:backgroundTint="@color/cardview_dark_background"
-        android:src="@drawable/baseline_navigate_before_24"
-        android:textColor="@color/LightGrey" />
+<!--    <ImageButton-->
+<!--        android:id="@+id/AnalisActivity"-->
+<!--        android:layout_width="30dp"-->
+<!--        android:layout_height="100dp"-->
+<!--        android:layout_below="@+id/remButton"-->
+<!--        android:layout_margin="20dp"-->
+<!--        android:layout_marginStart="20dp"-->
+<!--        android:layout_marginTop="30dp"-->
+<!--        android:layout_marginEnd="14dp"-->
+<!--        android:layout_marginBottom="20dp"-->
+<!--        android:backgroundTint="@color/cardview_dark_background"-->
+<!--        android:src="@drawable/baseline_navigate_before_24"-->
+<!--        android:textColor="@color/LightGrey" />-->
 
     <TextView
         android:id="@+id/textView"

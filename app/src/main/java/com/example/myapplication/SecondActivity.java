@@ -62,14 +62,14 @@ public class SecondActivity extends AppCompatActivity {
 
         users = db.getReference("Users");
 
-        binding.AnalisActivity.setOnClickListener(v ->{
-            Intent intent = new Intent(SecondActivity.this, FifthActivity.class);
-            startActivity(intent);
-        });
+//        binding.AnalisActivity.setOnClickListener(v ->{
+//            Intent intent = new Intent(SecondActivity.this, FifthActivity.class);
+//            Log.d("ActivityTransition", "Navigating to SecondActivity");
+//            startActivity(intent);
+//        });
 
         SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
         boolean isAdmin = sharedPreferences.getBoolean("admin", false);
-
 
         if (isAdmin) {
             binding.remButton.setVisibility(View.VISIBLE);
